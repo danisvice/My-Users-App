@@ -3,6 +3,7 @@
 
 ## Task
 TODO - What is the problem? And where is the challenge?
++ implement a MVC(Model View Controller) architecture
 
 ## Description
 TODO - How have you solved the problem?
