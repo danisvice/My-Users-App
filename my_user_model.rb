@@ -1,4 +1,7 @@
 class USER
+
+    attr_accesor :firstname, :lastname, :age, :password, :email
+
     def create(user_info)
         user = User.new
         user.firstname = user_info[:firstname]
@@ -11,6 +14,7 @@ class USER
     end
 
     def find(user_id)
+
     end
 
     def all
