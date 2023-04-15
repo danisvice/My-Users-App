@@ -39,7 +39,21 @@ post '/sign_in' do
     end
 end
 
+put '/users' do
+    user_id = session[:user_id]
+    halt 401, "Not signed in" unless user_id
+    new_password = params['new_password']
+    user = user_db.update(user_id, 'password', new_password)
+    content_type :json
+    user.slice('id', 'firstname', 'lastname', 'age', 'email').to_json
+end
 
+delete '/sign_out' do
+    session.clear
+    status 204
+end
 
-
-
+delete '/users' do 
+    user_id = session[:user_id]
+    halt 401, 'Not signed in'unless user_id
+    user_db
