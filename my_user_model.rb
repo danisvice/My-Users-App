@@ -44,5 +44,6 @@ class USER
     end
 
     def destroy(user_id)
+        db.execute("DELETE FROM users WHERE id=?", [user_id])
     end
 end
