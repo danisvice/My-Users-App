@@ -10,7 +10,7 @@ class USER
 
     def create_table
         db.execute 
-        << SQL CREATE TABLE IF NOT EXISTS
+        "CREATE TABLE IF NOT EXISTS
         users (
             id INTEGER PRIMARY KEY, 
             firstname TEXT,
@@ -18,7 +18,7 @@ class USER
             age INTEGER,
             password TEXT,
             email TEXT
-        ); 
+        );"
           SQL
     end
 
