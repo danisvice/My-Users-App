@@ -57,3 +57,4 @@ delete '/users' do
     user_id = session[:user_id]
     halt 401, 'Not signed in'unless user_id
     user_db
+end
