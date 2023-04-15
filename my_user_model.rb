@@ -1,9 +1,9 @@
 require 'sqlite3'
 
-class USER
+class User
     attr_reader :db
 
-    def initialize(db_file)
+    def initialize
         @db = SQLite3::Database.new('db.sql')
         create_table
     end
