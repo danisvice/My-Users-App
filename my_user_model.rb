@@ -34,10 +34,13 @@ class USER
     end
 
     def all
-        db.execute("SELECT ")
+        db.execute("SELECT id, firstname, lastname, age, password, email FROM users").map do |row|
+        {id: row[0], firstname: row[1], lastname: row[2], age: row[3], email: row[4]}
+        end
     end
 
     def update(user_id, attribute, value)
+        db.execute("UPDATE users SET #{attribute}=? WHERE id=? ", [value, user_id])
     end
 
     def destroy(user_id)
