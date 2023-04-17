@@ -38,10 +38,12 @@ class User
         end
     end
 
+    #instance method
     def update(user_id, attribute, value)
         db.execute("UPDATE users SET #{attribute}=? WHERE id=? ", [value, user_id])
     end
 
+    #instance method
     def destroy(user_id)
         db.execute("DELETE FROM users WHERE id=?", [user_id])
     end
