@@ -1,5 +1,5 @@
 require 'sqlite3'
-require_relative '../my_user_model'
+require_relative '../my_user_model.rb'
 
 describe User do
     before(:each) do
