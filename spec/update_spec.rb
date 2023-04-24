@@ -1,3 +1,4 @@
+require 'rspec'
 require 'sqlite3'
 require '../my_user_model.rb'
 
