@@ -2,23 +2,29 @@
 <html>
     <head>
         <title>Users index page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     </head>
-    <body>
-        <h1>Users</h1>
-        <table>
-            <tr>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Age</th>
-                <th>Email</th>
-            </tr>
-            <tr>
-                <td>XXXX</td>
-                <td>XXXX</td>
-                <td>XXXX</td>
-                <td>XXXX</td>
-            </tr>
-        </table>
+    <body class="bg-gray-50">
+        <div class="container mx-auto p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Users</h1>
+            <table class="bg-gray-100 border border-gray-200 rounded-lg p-6">
+                <thead>
+                    <tr>
+                        <th class="bg-gray-200 text-gray-800 font-medium py-2">FirstName</th>
+                        <th class="bg-gray-200 text-gray-800 font-medium py-2">LastName</th>
+                        <th class="bg-gray-200 text-gray-800 font-medium py-2">Age</th>
+                        <th class="bg-gray-200 text-gray-800 font-medium py-2">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-gray-700 py-2">XXXX</td>
+                        <td class="text-gray-700 py-2">XXXX</td>
+                        <td class="text-gray-700 py-2">XXXX</td>
+                        <td class="text-gray-700 py-2">XXXX</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
-$>
