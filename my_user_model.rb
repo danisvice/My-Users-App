@@ -28,9 +28,9 @@ class User
         db.last_insert_row_id
       end
 
-    def find(user_id)
-        db.execute("SELECT * FROM users WHERE id=?", [user_id]).first
-    end
+      def find(user_id)
+        db.execute("SELECT id, firstname, lastname, age, email FROM users WHERE id=?", [user_id]).first
+      end
 
     def all
         db.execute("SELECT id, firstname, lastname, age, email FROM users").map do |row|
