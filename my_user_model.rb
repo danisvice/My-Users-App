@@ -22,26 +22,27 @@ class User
           SQL
     end
 
-    def create(user_info) 
-        firstname, lastname, age, password, email = user_info.values
-        db.execute("INSERT INTO users (firstname, lastname, age, password, email) VALUES (?,?,?,?,?)",[firstname,lastname,age,password,email])
+    def create(user_info)
+        firstname, lastname, age, password, email = user_info.values_at('firstname', 'lastname', 'age', 'password', 'email')
+        db.execute("INSERT INTO users (firstname, lastname, age, password, email) VALUES (?,?,?,?,?)", [firstname,lastname,age,password,email])
         db.last_insert_row_id
-    end
+      end
 
     def find(user_id)
         db.execute("SELECT * FROM users WHERE id=?", [user_id]).first
     end
 
     def all
-        db.execute("SELECT id, firstname, lastname, age, password, email FROM users").map do |row|
-        {id: row[0], firstname: row[1], lastname: row[2], age: row[3], email: row[4]}
+        db.execute("SELECT id, firstname, lastname, age, email FROM users").map do |row|
+          {id: row[0], firstname: row[1], lastname: row[2], age: row[3], email: row[4]}
         end
-    end
+      end
 
     #instance method
     def update(user_id, attribute, value)
-        db.execute("UPDATE users SET #{attribute}=? WHERE id=? ", [value, user_id])
-    end
+        db.execute("UPDATE users SET #{attribute}=? WHERE id=?", [value, user_id])
+        find(user_id)
+      end
 
     #instance method
     def destroy(user_id)
