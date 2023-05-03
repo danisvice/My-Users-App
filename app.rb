@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'json'
-require_relative 'user'
+require_relative '../my_user_model.rb'
 
 set :port, 8080
 set :bind, '0.0.0.0'
