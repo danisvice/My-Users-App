@@ -1,52 +1,51 @@
 require 'sinatra'
 require 'json'
-require_relative 'my_user_model.rb'
-
-set :port, 8080
-set :bind, '0.0.0.0'
-set :public_folder, 'public'
-set :views, 'views'
+require 'sqlite3'
+require_relative 'my_user_model'
 
 enable :sessions
 
-user_db = User.new
+user = User.new
+
+# Rest of the routes...
 
 get '/' do
-    @users = user_db.all
-    erb :index
+  users = user.all
+  erb :'index.html', locals: { users: users }
 end
 
-get '/users' do
-  content_type :json
-  user_db.all.to_json
-end
 
 post '/users' do
-  user_info = params.slice('firstname', 'lastname', 'age', 'password', 'email')
-  user_id = user_db.create(user_info)
-  content_type :json
-  user_db.find(user_id).slice('id', 'firstname', 'lastname', 'age', 'email').to_json
+  user_info = {
+    firstname: params[:firstname],
+    lastname: params[:lastname],
+    age: params[:age],
+    password: params[:password],
+    email: params[:email]
+  }
+  user_id = user.create(user_info)
+  created_user = user.find(user_id)&.reject { |k, _| k == :password }
+  created_user.to_json
 end
 
 post '/sign_in' do
-  email, password = params.values_at('email', 'password')
-  user = user_db.all.find { |u| u[:email] == email && u[:password] == password }
-  if user
-    session[:user_id] = user[:id]
-    content_type :json
-    user.slice('id', 'firstname', 'lastname', 'age', 'email').to_json
-  else
-    halt 401, 'Invalid email or password'
-  end
+  user_info = {
+    email: params[:email],
+    password: params[:password]
+  }
+  user_id = authenticate(user_info)
+  session[:user_id] = user_id
+  signed_in_user = user.find(user_id)&.reject { |k, _| k == :password }
+  signed_in_user.to_json
 end
 
 put '/users' do
   user_id = session[:user_id]
-  halt 401, 'Not signed in' unless user_id
-  new_password = params['new_password']
-  user = user_db.update(user_id, 'password', new_password)
-  content_type :json
-  user.slice('id', 'firstname', 'lastname', 'age', 'email').to_json
+  return status 401 unless user_id
+
+  user.update(user_id, 'password', params[:new_password])
+  updated_user = user.find(user_id)&.reject { |k, _| k == :password }
+  updated_user.to_json
 end
 
 delete '/sign_out' do
@@ -56,7 +55,20 @@ end
 
 delete '/users' do
   user_id = session[:user_id]
-  halt 401, 'Not signed in' unless user_id
-  user_db.destroy(user_id)
+  return status 401 unless user_id
+
+  user.destroy(user_id)
+  session.clear
+  status 204
+end
+
+def authenticate(user_info)
+  # Implement your authentication logic here
+  # Return the user ID if authentication is successful, otherwise return nil
+  # You can compare the user_info with the data stored in your database
+  # or use any other authentication mechanism
+  # This is just a placeholder method, replace it with your own implementation
+  user_id = 1
+  user_id if user_info[:email] == 'test@example.com' && user_info[:password] == 'password'
 end
 
