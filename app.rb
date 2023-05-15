@@ -12,8 +12,8 @@ enable :sessions
 user_db = User.new
 
 get '/' do
-  @users = user_db.all
-  erb :index
+    @users = user_db.all
+    erb :index
 end
 
 get '/users' do
@@ -59,3 +59,4 @@ delete '/users' do
   halt 401, 'Not signed in' unless user_id
   user_db.destroy(user_id)
 end
+
