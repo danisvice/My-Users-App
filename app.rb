@@ -1,6 +1,6 @@
 require 'sinatra'
-require_relative './my_user_model'
 require 'json'
+require_relative './my_user_model'
 
 set('views', './views')
 
@@ -63,4 +63,3 @@ end
 get '/' do
     erb :index
 end
-
