@@ -1,53 +1,121 @@
-require 'sqlite3'
+require "sqlite3"
+
+$db_filename = "db.sql"
+$tablename = "users"
+
+class ConnectionSqLite
+    def new
+        @db = nil
+    end
+    def get_connection
+        if @db == nil
+            # Open a database
+            @db = SQLite3::Database.new($db_filename)
+            createdb
+        end
+        @db
+    end 
+
+    def createdb
+        # Create a table
+        rows = self.get_connection().execute <<-SQL
+        CREATE TABLE IF NOT EXISTS #{$tablename} (
+            id INTEGER PRIMARY KEY,
+            firstname varchar(30),
+            lastname varchar(30),
+            age int,
+            password varchar(30),
+            email varchar(30)
+        );
+        SQL
+    end
+
+    def execute(query)
+        self.get_connection().execute(query)
+    end
+end
 
 class User
-  def initialize
-    @db = SQLite3::Database.new('db.sql')
-    create_table
-  end
+    attr_accessor :id, :firstname, :lastname, :age, :password, :email
 
-  def create(user_info)
-    firstname, lastname, age, password, email = user_info.values
-    @db.execute(
-      'INSERT INTO users (firstname, lastname, age, password, email) VALUES (?, ?, ?, ?, ?)',
-      [firstname, lastname, age, password, email]
-    )
-    @db.last_insert_row_id
-  end
+    def initialize(array)
+        @id         = array[0]
+        @firstname  = array[1]
+        @lastname   = array[2]
+        @age        = array[3]
+        @password   = array[4]
+        @email      = array[5]
+    end
 
-  def find(user_id)
-    result = @db.execute('SELECT * FROM users WHERE id = ?', user_id)
-    result.empty? ? nil : user_hash(result.first)
-  end
+    def to_hash
+        {id: @id, firstname: @firstname, lastname: @lastname, age: @age, password: @password, email: @email}
+    end
 
-  def all
-    result = @db.execute('SELECT * FROM users')
-    result.map { |row| user_hash(row) }
-  end
+    def inspect
+        %Q|<User id: #{@id}, firstname: "#{@firstname}", lastname: "#{@lastname}", age: #{@age}, password: "#{@password}", email: "#{@email}">|
+    end
 
-  def update(user_id, attribute, value)
-    @db.execute("UPDATE users SET #{attribute} = ? WHERE id = ?", value, user_id)
-    find(user_id)
-  end
+    def self.create(user_info)
+       query = <<-REQUEST
+        INSERT INTO #{$tablename} (firstname, lastname, age, password, email) VALUES ("#{user_info[:firstname]}",
+        "#{user_info[:lastname]}",
+        "#{user_info[:age]}",
+        "#{user_info[:password]}",
+        "#{user_info[:email]}");    
+       REQUEST
 
-  def destroy(user_id)
-    @db.execute('DELETE FROM users WHERE id = ?', user_id)
-  end
+        ConnectionSqLite.new.execute(query)
+    end 
 
-  private
+    def self.get(user_id)
+        query = <<-REQUEST
+            SELECT * FROM #{$tablename} WHERE id = #{user_id};
+       REQUEST
 
-  def create_table
-    @db.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT, age INTEGER, password TEXT, email TEXT)')
-  end
+       rows = ConnectionSqLite.new.execute(query)
+       if rows.any?
+            User.new(rows[0])
+       else
+            nil
+       end
+    end
 
-  def user_hash(row)
-    {
-      id: row[0],
-      firstname: row[1],
-      lastname: row[2],
-      age: row[3],
-      password: row[4],
-      email: row[5]
-    }
-  end
+    def self.all
+        query = <<-REQUEST
+            SELECT * FROM #{$tablename};
+       REQUEST
+
+       rows = ConnectionSqLite.new.execute(query)
+       if rows.any?
+            rows.collect do |row|
+                User.new(row)
+            end
+       else
+            []
+       end
+    end
+
+    def self.filter_password(email, password)
+        User.all.filter {|user| user.email == email && user.password == password}.first
+    end
+
+    def self.update(user_id, attribute, value)
+        query = <<-REQUEST
+            UPDATE #{$tablename}
+            SET #{attribute.to_s} = '#{value}'
+            WHERE id = #{user_id};
+        REQUEST
+        puts query
+        ConnectionSqLite.new.execute(query)
+        updated = self.get(user_id).to_hash
+    end
+
+    def self.destroy(user_id)
+         query = <<-REQUEST
+            DELETE FROM #{$tablename}
+            WHERE id = #{user_id};
+        REQUEST
+    
+        ConnectionSqLite.new.execute(query)
+    end
 end

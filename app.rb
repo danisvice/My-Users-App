@@ -1,74 +1,66 @@
 require 'sinatra'
+require_relative './my_user_model'
 require 'json'
-require 'sqlite3'
-require_relative 'my_user_model'
+
+set('views', './views')
 
 enable :sessions
 
-user = User.new
+set :port, 8080
+set :bind, '0.0.0.0'
 
-# Rest of the routes...
-
-get '/' do
-  users = user.all
-  erb :'index.html', locals: { users: users }
-end
-
-
-post '/users' do
-  user_info = {
-    firstname: params[:firstname],
-    lastname: params[:lastname],
-    age: params[:age],
-    password: params[:password],
-    email: params[:email]
-  }
-  user_id = user.create(user_info)
-  created_user = user.find(user_id)&.reject { |k, _| k == :password }
-  created_user.to_json
+get '/users' do
+    User.all.collect do |row|
+        row.to_hash.to_json
+    end
 end
 
 post '/sign_in' do
-  user_info = {
-    email: params[:email],
-    password: params[:password]
-  }
-  user_id = authenticate(user_info)
-  session[:user_id] = user_id
-  signed_in_user = user.find(user_id)&.reject { |k, _| k == :password }
-  signed_in_user.to_json
+    user = User.filter_password(params['email'], params['password'])
+    if user
+        session[:user_id] = user.id
+        session[:password] = user.password
+        "Signed in" 
+    else
+        "Not authorized"
+    end
+end
+
+post '/users' do
+    User.create(params)
+    "User created"
 end
 
 put '/users' do
-  user_id = session[:user_id]
-  return status 401 unless user_id
-
-  user.update(user_id, 'password', params[:new_password])
-  updated_user = user.find(user_id)&.reject { |k, _| k == :password }
-  updated_user.to_json
+    params['password']
+    if session[:user_id]
+        user_updated = User.update(session[:user_id], :password, params['password'])
+        "#{user_updated}"
+    else
+        "Not authorized"
+    end
 end
 
 delete '/sign_out' do
-  session.clear
-  status 204
+   if session[:user_id]
+    user = User.get(session[:user_id])
+    session[:user_id] = nil
+    "Signed out"
+   end
 end
 
 delete '/users' do
-  user_id = session[:user_id]
-  return status 401 unless user_id
-
-  user.destroy(user_id)
-  session.clear
-  status 204
+    if session[:user_id]
+        user = User.get(session[:user_id])
+        if user
+            User.destroy(session[:user_id])
+            session[:user_id] = nil
+            "User deleted"
+        end
+    end
 end
 
-def authenticate(user_info)
-  # Implement your authentication logic here
-  # Return the user ID if authentication is successful, otherwise return nil
-  # You can compare the user_info with the data stored in your database
-  # or use any other authentication mechanism
-  # This is just a placeholder method, replace it with your own implementation
-  user_id = 1
-  user_id if user_info[:email] == 'test@example.com' && user_info[:password] == 'password'
+get '/' do
+    erb :index
 end
 
