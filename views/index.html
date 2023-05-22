@@ -2,6 +2,14 @@
 <html>
     <head>
         <title>Users index page</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            td, th {
+                border: 1px solid black;
+                padding: 1em;      }
+        </style>
     </head>
     <body>
         <h1>Users</h1>
@@ -12,14 +20,17 @@
                 <th>Age</th>
                 <th>Email</th>
             </tr>
-            <% users.each do |user| %>
+            <%  User.all.collect do |row| %>
             <tr>
-                <td><%= user[:firstname] %></td>
-                <td><%= user[:lastname] %></td>
-                <td><%= user[:age] %></td>
-                <td><%= user[:email] %></td>
+                <td><%= row.firstname%></td>
+                <td><%= row.lastname%></td>
+                <td><%= row.age%></td>
+                <td><%= row.email%></td>
             </tr>
             <% end %>
         </table>
     </body>
 </html>
+$>
+
+
