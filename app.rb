@@ -1,6 +1,6 @@
 require 'sinatra'
-require 'json'
 require_relative './my_user_model'
+require 'json'
 
 set('views', './views')
 
