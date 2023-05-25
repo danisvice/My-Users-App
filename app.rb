@@ -1,65 +1,62 @@
 require 'sinatra'
-require_relative './my_user_model'
 require 'json'
-
-set('views', './views')
-
-enable :sessions
+require_relative 'my_user_model.rb'
 
 set :port, 8080
 set :bind, '0.0.0.0'
+set :public_folder, 'public'
+set :views, 'views'
 
-get '/users' do
-    User.all.collect do |row|
-        row.to_hash.to_json
-    end
+enable :sessions
+
+user_db = User.new
+
+get '/' do
+  @users = user_db.all
+  erb :index
 end
 
-post '/sign_in' do
-    user = User.filter_password(params['email'], params['password'])
-    if user
-        session[:user_id] = user.id
-        session[:password] = user.password
-        "Signed in" 
-    else
-        "Not authorized"
-    end
+get '/users' do
+  content_type :json
+  user_db.all.to_json
 end
 
 post '/users' do
-    User.create(params)
-    "User created"
+  user_info = params.slice('firstname', 'lastname', 'age', 'password', 'email')
+  user_id = user_db.create(user_info)
+  content_type :json
+  user_db.find(user_id).slice('id', 'firstname', 'lastname', 'age', 'email').to_json
+end
+
+post '/sign_in' do
+  email, password = params.values_at('email', 'password')
+  user = user_db.all.find { |u| u[:email] == email && u[:password] == password }
+  if user
+    session[:user_id] = user[:id]
+    content_type :json
+    user.slice('id', 'firstname', 'lastname', 'age', 'email').to_json
+  else
+    halt 401, 'Invalid email or password'
+  end
 end
 
 put '/users' do
-    params['password']
-    if session[:user_id]
-        user_updated = User.update(session[:user_id], :password, params['password'])
-        "#{user_updated}"
-    else
-        "Not authorized"
-    end
+  user_id = session[:user_id]
+  halt 401, 'Not signed in' unless user_id
+  new_password = params['new_password']
+  user = user_db.update(user_id, 'password', new_password)
+  content_type :json
+  user.slice('id', 'firstname', 'lastname', 'age', 'email').to_json
 end
 
 delete '/sign_out' do
-   if session[:user_id]
-    user = User.get(session[:user_id])
-    session[:user_id] = nil
-    "Signed out"
-   end
+  session.clear
+  status 204
 end
 
 delete '/users' do
-    if session[:user_id]
-        user = User.get(session[:user_id])
-        if user
-            User.destroy(session[:user_id])
-            session[:user_id] = nil
-            "User deleted"
-        end
-    end
+  user_id = session[:user_id]
+  halt 401, 'Not signed in' unless user_id
+  user_db.destroy(user_id)
 end
 
-get '/' do
-    erb :index
-end
