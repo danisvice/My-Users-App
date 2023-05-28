@@ -11,7 +11,7 @@ set :port, 8080
 set :bind, '0.0.0.0'
 
 get '/users' do
-    User.all.collect do |row|
+    erb: User.all.collect do |row|
         row.to_hash.to_json
     end
 end
