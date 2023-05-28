@@ -4,7 +4,7 @@
 ## Task
 
 + implemention of a MVC(Model View Controller) architecture
-+   This project implements a web application using the 
++       This project implements a web application using the 
 - Model-View-Controller (MVC) architecture. 
 - The application allows the creation, retrieval, updating, and deletion 
 - of user records stored in a SQLite database. It also provides a web interface 
@@ -28,6 +28,20 @@
     - all users, creating new users, signing in, updating passwords, signing out, 
     - and deleting users. These routes return responses in JSON format and involve 
     - interacting with the User model to perform the necessary operations on the user records.
+
++       PART III: VIEWS
+    - The third part introduced the concept of views and included a 
+    - route that responds with an HTML page. The HTML template, stored 
+    - in the views directory, is named index.erb. It displays a table of user 
+    - information, including firstname, lastname, age, and email. The template uses 
+    - embedded Ruby (ERB) to dynamically render the user data retrieved from the database.
+
++       SUMMARY: 
+-  To solve the problem, the solution involved writing the necessary Ruby code to implement 
+- the user model, controller routes, and HTML template. The code utilizes the sinatra gem for 
+- building the web application, the json gem for handling JSON responses, and the sqlite3 gem for 
+- interacting with the SQLite database. The implementation follows the MVC architecture, separating 
+- the concerns of data management, request handling, and view rendering.
 
 
 ## Installation
