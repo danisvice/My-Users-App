@@ -11,8 +11,16 @@
 - for displaying user information and performing various actions.
 
 ## Description
-TODO - How have you solved the problem?
-+ watched videos and tutorials on what and how MVC functions. 
+
++       PART I: USER MODEL
+    - The first part of the project involved creating a 
+    - User class that serves as the interface for managing 
+    - user records in the database. The class includes methods 
+    - for creating users, finding users by ID, retrieving all users, 
+    - updating user attributes, and destroying users. The user records 
+    - are stored in an SQLite database named db.sql, and the users table 
+    - contains attributes such as firstname, lastname, age, password, and email.
+
 
 ## Installation
 TODO - How to install your project? npm install? make? make re?
