@@ -54,7 +54,63 @@
 
 
 ## Usage
+        PART I: USER MODEL
+Class: User
+The User class serves as the interface for managing user records in the database.
 
+Methods
++ def create(user_info): Creates a new user with the provided information and returns a unique ID (a positive integer).
++ def find(user_id): Retrieves the user with the specified ID and returns all the information contained in the database.
++ def all: Retrieves all users from the database and returns a hash of users.
++ def update(user_id, attribute, value): Retrieves the user with the specified ID, updates the specified attribute with the given value, and returns the updated user hash.
++ def destroy(user_id): Retrieves the user with the specified ID and deletes it from the database.
+
+SQLite Database
++ The user records are stored in an SQLite database named db.sql. The database table is named users and has the following attributes:
+
+firstname (string)
+lastname (string)
+age (integer)
+password (string)
+email (string)
+
+
+        PART II: CONTROLLER
+- The controller handles HTTP requests and interacts with the User model. The routes return responses in JSON format.
+
+Routes
+GET /users: Retrieves all users from the database (excluding their passwords) and returns the user records as JSON.
+POST /users: Creates a new user with the provided parameters (firstname, lastname, age, password, email). The user is stored in the database, and the created user record (excluding the password) is returned as JSON.
+POST /sign_in: Validates the provided email and password, creates a session containing the user_id for logging in, and returns the user record (excluding the password) as JSON.
+PUT /users: Requires the user to be logged in. Updates the user's password with the provided value. The updated user record (excluding the password) is returned as JSON.
+DELETE /sign_out: Requires the user to be logged in. Signs out the current user by removing the session. No response body is returned (HTTP status code 204).
+DELETE /users: Requires the user to be logged in. Signs out the current user and deletes their user record from the database. No response body is returned (HTTP status code 204).
+Part III: Views
+The application includes a route / that responds with an HTML page. The HTML template is stored in the views directory.
+
+        PART III: VIEWS
+Template: views/index.erb
+html
+Copy code
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Users index page</title>
+    </head>
+    <body>
+        <h1>Users</h1>
+        <table>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Age</th>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td>XXXX</td>
+                <td>XXXX</td>
+                <td>XXXX</td>
+               
 
 ```
 ./my_project argument1 argument2
