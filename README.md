@@ -2,8 +2,13 @@
 ***
 
 ## Task
-TODO - What is the problem? And where is the challenge?
-+ implement a MVC(Model View Controller) architecture
+
++ implemention of a MVC(Model View Controller) architecture
++   This project implements a web application using the 
+- Model-View-Controller (MVC) architecture. 
+- The application allows the creation, retrieval, updating, and deletion 
+- of user records stored in a SQLite database. It also provides a web interface 
+- for displaying user information and performing various actions.
 
 ## Description
 TODO - How have you solved the problem?
