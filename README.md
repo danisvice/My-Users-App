@@ -21,6 +21,14 @@
     - are stored in an SQLite database named db.sql, and the users table 
     - contains attributes such as firstname, lastname, age, password, and email.
 
++       PART II: CONTROLLER 
+    - The second part focused on implementing a controller 
+    - that handles HTTP requests and interacts with the User model. 
+    - The controller includes routes for various actions, such as retrieving 
+    - all users, creating new users, signing in, updating passwords, signing out, 
+    - and deleting users. These routes return responses in JSON format and involve 
+    - interacting with the User model to perform the necessary operations on the user records.
+
 
 ## Installation
 TODO - How to install your project? npm install? make? make re?
