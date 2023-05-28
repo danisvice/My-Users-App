@@ -45,7 +45,11 @@
 
 
 ## Installation
-TODO - How to install your project? npm install? make? make re?
+1. Clone the repository to your local machine.
+2. Make sure you have Ruby installed.
+3. Install the required gems by running the following command: 
+   bundle install
+
 
 ## Usage
 
