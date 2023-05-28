@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'erb'
 require_relative './my_user_model'
 require 'json'
 
