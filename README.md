@@ -1,8 +1,6 @@
 # Welcome to My Users App
 ***
-
 ## Task
-
 + implemention of a MVC(Model View Controller) architecture
 +       This project implements a web application using the 
 - Model-View-Controller (MVC) architecture. 
@@ -11,7 +9,6 @@
 - for displaying user information and performing various actions.
 
 ## Description
-
 +       SUMMARY: 
 -  To solve the problem, the solution involved writing the necessary Ruby code to implement 
 - the user model, controller routes, and HTML template. The code utilizes the sinatra gem for 
@@ -39,11 +36,24 @@
 
 CURL TESTS:
 1. render index.erb via output.html 
-+ GET ON '/'
+
++ GET on '/'
 - curl -X GET http://localhost:8080/ > output.html 
-+ POST/ 
+
++ POST/users
 - curl -X POST -i http://localhost:8080/users -d "firstname=Matt" -d "lastname=Damon" -d "age=26" -d "password=limoncello" -d "email=longbeach@yahoo.com" > output.html
-  
+
++ POST/sign_in
+- curl -c cookies.txt -X POST localhost:8080/sign_in -d email=longbeach@yahoo.com -d password=limoncello
+
++ PUT/users 
+- curl -b cookies.txt -X PUT localhost:8080/users -d password=pancakes
+
++ DELETE/users 
+- curl -b cookies.txt -X DELETE localhost:8080/users
+
++ DELETE/sign_out
+- curl -b cookies.txt -X DELETE localhost:8080/sign_out
 
 ```
 ./my_project argument1 argument2
