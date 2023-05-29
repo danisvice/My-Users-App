@@ -38,19 +38,22 @@
 1. render index.erb via output.html 
 
 + GET on '/'
-- curl -X GET http://localhost:8080/ > output.html 
+    curl -X GET http://localhost:8080/ > output.html 
 
 + POST/users
-- curl -X POST -i http://localhost:8080/users -d "firstname=Matt" -d "lastname=Damon" -d "age=26" -d "password=limoncello" -d "email=longbeach@yahoo.com" > output.html
+    curl -X POST -i http://localhost:8080/users -d "firstname=Matt" -d "lastname=Damon" -d "age=26" -d "password=limoncello" -d "email=longbeach@yahoo.com" > output.html
 
 + POST/sign_in
-- curl -c cookies.txt -X POST localhost:8080/sign_in -d email=longbeach@yahoo.com -d password=limoncello
+    curl -c cookies.txt -X POST localhost:8080/sign_in -d email=longbeach@yahoo.com -d password=limoncello
 
-- PUT/users curl -b cookies.txt -X PUT localhost:8080/users -d password=pancakes
+- PUT/users 
+    curl -b cookies.txt -X PUT localhost:8080/users -d password=pancakes
 
-- DELETE/users curl -b cookies.txt -X DELETE localhost:8080/users
+- DELETE/users 
+    curl -b cookies.txt -X DELETE localhost:8080/users
 
-- DELETE/sign_out curl -b cookies.txt -X DELETE localhost:8080/sign_out
+- DELETE/sign_out 
+    curl -b cookies.txt -X DELETE localhost:8080/sign_out
 
 ```
 ./my_project argument1 argument2
