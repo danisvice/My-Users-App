@@ -45,13 +45,10 @@
 
 
 ## Installation
-1. Clone the repository to your local machine.
-2. Make sure you have Ruby installed.
-3. Install the required gems by running the following command: 
-    bundle install
-4. Set up the SQLite database by running the following command:
-    ruby db_setup.rb
-
+1. open 2 separate terminals
+2. run `ruby app.rb' in terminal 1
+3. run curl tests in terminal 2
+4. views/index.erb render via output.html 
 
 ## Usage
         PART I: USER MODEL
