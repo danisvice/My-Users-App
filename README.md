@@ -89,28 +89,14 @@ Part III: Views
 The application includes a route / that responds with an HTML page. The HTML template is stored in the views directory.
 
         PART III: VIEWS
-Template: views/index.erb
-html
-Copy code
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Users index page</title>
-    </head>
-    <body>
-        <h1>Users</h1>
-        <table>
-            <tr>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Age</th>
-                <th>Email</th>
-            </tr>
-            <tr>
-                <td>XXXX</td>
-                <td>XXXX</td>
-                <td>XXXX</td>
-               
+Template: views/index.erb Render: output.html
+CURL TESTS:
+1. render index.erb via output.html 
++ GET ON '/'
+- curl -X GET http://localhost:8080/ > output.html 
++ POST/ 
+- curl -X POST -i http://localhost:8080/users -d "firstname=Matt" -d "lastname=Damon" -d "age=26" -d "password=limoncello" -d "email=longbeach@yahoo.com" > output.html
+  
 
 ```
 ./my_project argument1 argument2
